@@ -1,0 +1,87 @@
+#!/usr/bin/python
+
+# BSD 2-Clause License
+#
+# Copyright (c) 2017, Tim Sammut with modifications by Ilker Temir
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+# 
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS'
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+import base64
+import cgi
+import Cookie
+import json
+import onetimepass
+import os
+import re
+import settings
+import sys
+import time
+import urllib
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+STATE_DIR = os.path.join(BASE_DIR, 'state')
+TEMPLATE_FILE = os.path.join(BASE_DIR, 'template.html')
+TOKEN_FILE = os.path.join(BASE_DIR, 'tokens.json')
+
+fields = cgi.FieldStorage()
+token_user = fields.getvalue('p', None)
+url = os.environ.get('QUERY_STRING', '/')
+
+with open(TOKEN_FILE, 'r') as f:
+    secret = json.load(f)
+
+user = os.environ.get('REMOTE_USER', None)
+user_secret = secret.get(user, None)
+
+if user is None or user_secret is None:
+    print 'Content-type: text/html\r\n\r\n'
+    print 'Contact your administrator to obtain your 2FA secret.\n'
+    sys.exit()
+
+token_gen = str(onetimepass.get_totp(user_secret))
+if token_user == token_gen:
+    cookie = Cookie.SimpleCookie()
+    # Create a random key and store it in session cookie
+    key = re.sub(r'[=+/]+', '', base64.b64encode(os.urandom(80)))
+    cookie['2FA_Auth'] = key
+    cookie['2FA_Auth']['path'] = '/'
+    cookie['2FA_Auth']['expires'] = settings.EXPIRATION_TIME
+    cookie['2FA_Auth']['secure'] = True
+    cookie['2FA_Auth']['httponly'] = True
+
+    # Create a local state file with the key value, it will be checked
+    # by Apache mod_rewrite
+    state_file = os.path.join(STATE_DIR, key)
+    with open(state_file, 'w+') as state:
+        # Following write is optional, used for logging
+        state.write('%s\n%s\n%s\n' % (os.environ.get('HTTP_USER_AGENT', ''),
+                os.environ.get('REMOTE_ADDR', ''),
+                os.environ.get('REMOTE_USER', '')))
+
+    print 'Status: 302 Moved'
+    print 'Location: ' + urllib.unquote(url)
+    print cookie
+    print ''
+else:
+    print 'Content-type: text/html\r\n\r\n'
+    print open(TEMPLATE_FILE).read()

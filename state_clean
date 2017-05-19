@@ -1,0 +1,4 @@
+#!/bin/sh
+
+BASEDIR=$(dirname "$0")
+find $BASEDIR/state/ -type f -mtime +0 -exec rm -f {} \;

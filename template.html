@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<style>
+input[type=text], select {
+    width: 200px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 100px;
+    background-color: #006dcc;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #0044cc;
+}
+
+div.main {
+    position: absolute;
+    width: 300px;
+    height: 260px;
+    left: 50%;
+    top: 50%;
+    margin-top: -150px;
+    margin-left: -150px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: center;
+}
+
+img.logo {
+    width: 150px;
+    height: 150px;
+}
+</style>
+
+<body>
+<div class="main">
+  <img class="logo" src="https://lh3.googleusercontent.com/HPc5gptPzRw3wFhJE1ZCnTqlvEvuVFBAsV9etfouOhdRbkp-zNtYTzKUmUVPERSZ_lAL=w300"><br/>
+  <form method="POST">
+    <input type="text" id="token" name="p" placeholder="Authentication Token"><br/>
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+</body>
+</html>
+
