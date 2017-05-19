@@ -75,8 +75,12 @@ Test the configuration and reload Apache if no errors. If there were errors, ver
     $ sudo apachectl configtest
     $ sudo service apache2 reload
 
-If all went well, you can now test the application. Go to a protected web page. You should be prompted to enter a username and password. Use **test_user** / **test_password**. You should now be prompted for an Authentication Token. In order to obtain Authentication Token, download Google Authenticator for [iOS](https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8) or [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en) and create a profile by using **ND4LKCSFMUQISO6CBZQATLDP** secret key. Once you define a profile, Google Authenticator will create a token that you can use in this form.
+If all went well, you can now test the application. Go to a protected web page. You should be prompted to enter a username and password. Use **test_user** / **test_password**. You should now be prompted for an Authentication Token. If **test_user** authentication fails, change the password with the following command:
+
+    $ htdigest apache_credentials yourdomain.com test_user
+
+In order to obtain Authentication Token, download Google Authenticator for [iOS](https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8) or [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en) and create a profile by using **ND4LKCSFMUQISO6CBZQATLDP** secret key. Once you define a profile, Google Authenticator will create a token that you can use in this form.
 
 If the test is successful, edit *apache_credentials* and *tokens.json* files and remove **test_user**.
 
-You can create new users by using *htdigest* tool and for creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/).
+You can create new users by using *htdigest* tool and for creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/). You need to save generated secret keys in *tokens.json* file.
