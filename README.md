@@ -83,4 +83,14 @@ In order to obtain Authentication Token, download Google Authenticator for [iOS]
 
 If the test is successful, edit *apache_credentials* and *tokens.json* files and remove **test_user**.
 
-You can create new users by using *htdigest* tool and for creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/). You need to save generated secret keys in *tokens.json* file.
+Maintenance
+---
+You can create new users by using *htdigest* tool:
+
+    $ htdigest apache_credentials yourdomain.com <new_user>
+
+For creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/). You need to save generated secret keys in *tokens.json* file.
+
+For every successful authentication session, a new file will be created under */state* directory. This file is relevant until the cookie expires (default value is 6 hours for expiration). You will eventually want to clean stale entried in this directory. *state_clean* utility that is included the repository can be used to delete state files that are older than 24 hours. You can call it from a cron job daily:
+
+    0 * * * * <path to apache_2fa>/clean_state
