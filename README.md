@@ -68,7 +68,7 @@ Add the following configuration to Apache configuration under appropriate Virtua
         Require valid-user
     </Directory>
 
-Replace *path to apache_2fa* with the full path of cloned repository, *path to protected directory* with the actual path of the site you are trying to protect. If you change *yourdomain.com* make sure to make corresponding changes in *apache_credentials* file. Pay special attention to trailing slashes where present. You may be able to combine two Directory configurations into one depending on your directory structure, just make sure both paths are covered by auhentication mechanism.
+Replace *path to apache_2fa* with the full path of cloned repository, *path to protected directory* with the actual path of the site you are trying to protect. If you change *yourdomain.com* make sure to make corresponding changes in *apache_credentials* file. Pay special attention to trailing slashes where present. You may be able to combine two Directory configurations into one depending on your directory structure, just make sure both paths are covered by the same auhentication mechanism.
 
 Test the configuration and reload Apache if no errors. If there are errors, verify steps above and make sure if you have all necessary modules enabled.
 
