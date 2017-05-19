@@ -48,9 +48,9 @@ Add the following configuration to Apache configuration under appropriate Virtua
     RewriteCond <path to apache_2fa>/state/%1 !-f
     RewriteRule ^(.*)$ /auth/auth?$1?%{QUERY_STRING} [L,R=302]
 
-    ScriptAlias /auth/ <path to_apache 2fa (note trailing slash)>/
+    ScriptAlias /auth/ <path to_apache 2fa (note the trailing slash)>/
 
-    <Directory <path to apache_2fa>
+    <Directory <path to apache_2fa>>
         AuthType Digest
         AuthName "yourdomain.com"
         AuthDigestDomain /
