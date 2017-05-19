@@ -26,7 +26,7 @@ Adjust permissions to allow access only to Apache (replace www-data with the use
     $ sudo chown www-data:www-data state
     $ sudo chown www-data:www-data tokens.json
     $ sudo chmod 750 state
-    $ sudo chmod 640 token.json
+    $ sudo chmod 640 tokens.json
 
 Enable mod_rewrite, mod_auth_digest and mod_cgid if not already enabled (you will need to restart Apache):
 
