@@ -68,15 +68,15 @@ Add the following configuration to Apache configuration under appropriate Virtua
         Require valid-user
     </Directory>
 
-Replace *path to apache_2fa* with the full path of clone repository, *path to protected directory* with the actual path of the site you are trying to protect. If you change *yourdomain.com* make sure to make corresponding changes in apache_credentials file. Pay special attention to trailing slashes where present. You may be able to combine two Directory configurations into one depending on your directory structure, just make sure both paths are covered by auhentication mechanism.
+Replace *path to apache_2fa* with the full path of cloned repository, *path to protected directory* with the actual path of the site you are trying to protect. If you change *yourdomain.com* make sure to make corresponding changes in *apache_credentials* file. Pay special attention to trailing slashes where present. You may be able to combine two Directory configurations into one depending on your directory structure, just make sure both paths are covered by auhentication mechanism.
 
-Test the configuration and reload Apache if no errors:
+Test the configuration and reload Apache if no errors. If there were errors, verify steps above and make sure if you have all necessary modules enabled.
 
     $ sudo apachectl configtest
     $ sudo service apache2 reload
 
-If there were errors, verify steps above and make sure if you have all necessary modules enabled.
+If all went well, you can now test the application. Go to a protected web page. You should be prompted to enter a username and password. Use **test_user** / **test_password**. You should now be prompted for an Authentication Token. In order to obtain Authentication Token, download Google Authenticator for [iOS](https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8) or [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en) and create a profile by using **ND4LKCSFMUQISO6CBZQATLDP** secret key. Once you define a profile, Google Authenticator will create a token that you can use in this form.
 
-If all went well, you can now test the application. Go to a protected web page. You should be prompted for enter a username and password. Use **test_user** / **test_password**. You should now be prompted for an Authentication Token. In order to obtain Authentication Token, download Google Authenticator for [iOS](https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8) or [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en) and create a profile by using **ND4LKCSFMUQISO6CBZQATLDP** secret key. Once you define a profile, Google Authenticator will create a token that you can use in this form.
+If the test is successful, edit *apache_credentials* and *tokens.json* files and remove **test_user**.
 
-If the test is successful, edit *apache_credentials* and *tokens.json* and remove references to test_user. You can create new users by using *htdigest* tool and for creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/).
+You can create new users by using *htdigest* tool and for creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/).
