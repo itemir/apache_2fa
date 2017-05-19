@@ -1,7 +1,8 @@
 # Apache Two-Factor (2FA) Authentication with Google Authenticator
 
 <img src='https://raw.githubusercontent.com/itemir/apache_2fa/master/2fa_demo.gif' align='left' width='400' height='276' hspace='5' vspace='5'>
-[Two-factor authentication](https://en.wikipedia.org/wiki/Multi-factor_authentication), also known as 2FA, adds an extra step to a basic authentication procedure. Without 2FA, a user only enters username and password. In this case, the password is the single factor of authentication. With 2FA and additional authentication mechanism is used, preferably out-of-band.
+
+[Two-factor authentication](https://en.wikipedia.org/wiki/Multi-factor_authentication) also known as 2FA, adds an extra step to a basic authentication procedure. Without 2FA, a user only enters username and password. In this case, the password is the single factor of authentication. With 2FA and additional authentication mechanism is used, preferably out-of-band.
 
 [Google Authenticator](https://en.wikipedia.org/wiki/Google_Authenticator) is an application that implements two-factor authentication services using the Time-based One-time Password Algorithm (TOTP).
 
@@ -67,7 +68,7 @@ Add the following configuration to Apache configuration under appropriate Virtua
         Require valid-user
     </Directory>
 
-Replace *<path to apache_2fa>* with the full path of clone repository, *<path to protected directory>* with the actual path of the site you are trying to protect. If you change *yourdomain.com* make sure to make corresponding changes in apache_credentials file. Pay special attention to trailing slashes where present. You may be able to combine two Directory configurations into one depending on your directory structure, just make sure both paths are covered by auhentication mechanism.
+Replace *path to apache_2fa* with the full path of clone repository, *path to protected directory* with the actual path of the site you are trying to protect. If you change *yourdomain.com* make sure to make corresponding changes in apache_credentials file. Pay special attention to trailing slashes where present. You may be able to combine two Directory configurations into one depending on your directory structure, just make sure both paths are covered by auhentication mechanism.
 
 Test the configuration and reload Apache if no errors:
 
@@ -76,6 +77,6 @@ Test the configuration and reload Apache if no errors:
 
 If there were errors, verify steps above and make sure if you have all necessary modules enabled.
 
-If all went well, you can now test the application. Go to a protected web page. You should be prompted for enter a username and password. Use *test_user* / *test_password*. You should now be prompted for an Authentication Token. In order to obtain Authentication Token, download Google Authenticator for [iOS](https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8) or [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en) and create a profile by using *ND4LKCSFMUQISO6CBZQATLDP* secret key. Once you define a profile, Google Authenticator will create a token that you can use in this form.
+If all went well, you can now test the application. Go to a protected web page. You should be prompted for enter a username and password. Use **test_user** / **test_password**. You should now be prompted for an Authentication Token. In order to obtain Authentication Token, download Google Authenticator for [iOS](https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8) or [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en) and create a profile by using **ND4LKCSFMUQISO6CBZQATLDP** secret key. Once you define a profile, Google Authenticator will create a token that you can use in this form.
 
 If the test is successful, edit *apache_credentials* and *tokens.json* and remove references to test_user. You can create new users by using *htdigest* tool and for creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/).
