@@ -40,11 +40,11 @@ Add the following configuration to Apache configuration under appropriate Virtua
     RewriteEngine On
 
     RewriteCond %{REQUEST_URI} !^/auth/
-    RewriteCond %{HTTP_COOKIE} !^.*2FA_Auth=([^;]+)
+    RewriteCond %{HTTP_COOKIE} !^.*2FA_Auth=([a-zA-Z0-9]+)
     RewriteRule ^(.*)$ /auth/auth?$1?%{QUERY_STRING} [L,R=302]
 
     RewriteCond %{REQUEST_URI} !^/auth/
-    RewriteCond %{HTTP_COOKIE} ^.*2FA_Auth=([^;]+)
+    RewriteCond %{HTTP_COOKIE} ^.*2FA_Auth=([a-zA-Z0-9]+)
     RewriteCond <path to apache_2fa>/state/%1 !-f
     RewriteRule ^(.*)$ /auth/auth?$1?%{QUERY_STRING} [L,R=302]
 
