@@ -6,7 +6,9 @@
 
 [Google Authenticator](https://en.wikipedia.org/wiki/Google_Authenticator) is an application that implements two-factor authentication services using the Time-based One-time Password Algorithm (TOTP).
 
-Apache provides a basic authentication mechanism with mod_auth_digest. For more secure applications, it is often required to have an additional layer of authentication. This repository provides necessary code and instructions to add two-factor authentication to basic Apache authentication. This method is transparent to underlying applications so it can be used for any Apache served web site whether it is static, dynamic (PHP, Django, Flask etc.) or pre-packaged (Wiki, CRM, CMS etc.).
+Apache provides basic authentication mechanism with mod_auth_basic or mod_auth_digest. For more secure applications, it is often required to have an additional layer of authentication. This repository provides necessary code and instructions to add two-factor authentication to basic Apache authentication. This method is transparent to underlying applications so it can be used for any Apache served web site whether it is static, dynamic (PHP, Django, Flask etc.) or pre-packaged (Wiki, CRM, CMS etc.).
+
+Specific instructions are provided below for configuring two-factor authentication with mod_auth_digest, but the same code and approach can be used with different Apache authentication mechanisms with slight modifications.
 
 Instructions
 ---
@@ -91,6 +93,6 @@ You can create new users by using *htdigest* tool:
 
 For creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/). You need to save generated secret keys (base32) in *tokens.json* file.
 
-For every successful authentication session, a new file will be created under */state* directory. This file is relevant until the cookie expires (default value is 6 hours for expiration). You will eventually want to clean stale entried in this directory. *state_clean* utility that is included the repository can be used to delete state files that are older than 24 hours. You can call it from a cron job daily:
+For every successful authentication session, a new file will be created under */state* directory. This file is relevant until the cookie expires (default value is 6 hours for expiration). You will eventually want to clean stale entried in this directory. *state_clean* utility that is included the repository can be used to delete state files that are older than 6 hours. You can call it from a cron job every 6 hours:
 
-    0 * * * * <path to apache_2fa>/clean_state
+    0 */6 * * * <path to apache_2fa>/clean_state
