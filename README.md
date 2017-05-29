@@ -93,6 +93,6 @@ You can create new users by using *htdigest* tool:
 
 For creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/). You need to save generated secret keys (base32) in *tokens.json* file.
 
-For every successful authentication session, a new file will be created under */state* directory. This file is relevant until the cookie expires (default value is 6 hours for expiration). You will eventually want to clean stale entried in this directory. *state_clean* utility that is included the repository can be used to delete state files that are older than 6 hours. You can call it from a cron job every 6 hours:
+For every successful authentication session, a new file will be created under */state* directory. This file is relevant until the cookie expires (default value is 6 hours for expiration). You will eventually want to clean stale entried in this directory. *state_clean* utility that is included the repository can be used to delete state files that are older than 6 hours. You can call it from a cron job every hour which also prevents users from manually increasing the expiration timer of cookies to delay token re-authorization:
 
-    0 */6 * * * <path to apache_2fa>/clean_state
+    0 * * * * <path to apache_2fa>/clean_state
