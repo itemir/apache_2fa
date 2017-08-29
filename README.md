@@ -72,6 +72,11 @@ Add the following configuration to Apache configuration under appropriate Virtua
 
 Replace *path to apache_2fa* with the full path of cloned repository, *path to protected directory* with the actual path of the site you are trying to protect. If you change *yourdomain.com* make sure to make corresponding changes in *apache_credentials* file. Pay special attention to trailing slashes where present. You may be able to combine two Directory configurations into one depending on your directory structure, just make sure both paths are covered by the same auhentication mechanism.
 
+***NOTE***: This configuration is for https. For a setup like this, using http is not recommended. However, if you want to test it with http you need to make changes to the auth script and comment out the following two lines:
+
+    cookie['2FA_Auth']['secure'] = True
+    cookie['2FA_Auth']['httponly'] = True
+
 Test the configuration and reload Apache if no errors. If there are errors, verify steps above and make sure if you have all necessary modules enabled.
 
     $ sudo apachectl configtest

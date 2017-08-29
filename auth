@@ -66,6 +66,7 @@ if token_user == token_gen:
     cookie['2FA_Auth'] = key
     cookie['2FA_Auth']['path'] = '/'
     cookie['2FA_Auth']['expires'] = settings.EXPIRATION_TIME
+    # You need to comment out following two lines if you are using http
     cookie['2FA_Auth']['secure'] = True
     cookie['2FA_Auth']['httponly'] = True
 
