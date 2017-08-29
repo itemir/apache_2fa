@@ -8,7 +8,7 @@
 
 Apache provides basic authentication mechanism with mod_auth_basic or mod_auth_digest. For more secure applications, it is often required to have an additional layer of authentication. This repository provides necessary code and instructions to add two-factor authentication to basic Apache authentication. This method is transparent to underlying applications so it can be used for any Apache served web site whether it is static, dynamic (PHP, Django, Flask etc.) or pre-packaged (Wiki, CRM, CMS etc.).
 
-Specific instructions are provided below for configuring two-factor authentication with mod_auth_digest, but the same code and approach can be used with different Apache authentication mechanisms with slight modifications.
+Specific instructions are provided below for configuring two-factor authentication with mod_auth_digest, but the same code and approach can be used with different Apache authentication mechanisms with slight modifications. Similarly, it is also possible to use the same code with slight modifications and the same approach to provide 2FA based on HMAC-based one-time password (HOTP) algorithm.
 
 Instructions
 ---
