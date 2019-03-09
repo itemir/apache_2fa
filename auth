@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # BSD 2-Clause License
 #
@@ -28,7 +28,7 @@
 
 import base64
 import cgi
-import Cookie
+from http import cookies as Cookie
 import json
 import onetimepass
 import os
@@ -54,15 +54,16 @@ user = os.environ.get('REMOTE_USER', None)
 user_secret = secret.get(user, None)
 
 if user is None or user_secret is None:
-    print 'Content-type: text/html\r\n\r\n'
-    print 'Contact your administrator to obtain your 2FA secret.\n'
+    print("Content-type: text/html\r\n\r\n")
+    print("Contact your administrator to obtain your 2FA secret.\n")
     sys.exit()
 
 token_gen = str(onetimepass.get_totp(user_secret))
 if token_user == token_gen:
     cookie = Cookie.SimpleCookie()
     # Create a random key and store it in session cookie
-    key = re.sub(r'[=+/]+', '', base64.b64encode(os.urandom(80)))
+    random = os.urandom(80)
+    key = re.sub(r'[=+/]+', '', base64.b64encode(random).decode("ascii"))
     cookie['2FA_Auth'] = key
     cookie['2FA_Auth']['path'] = '/'
     cookie['2FA_Auth']['expires'] = settings.EXPIRATION_TIME
@@ -79,10 +80,10 @@ if token_user == token_gen:
                 os.environ.get('REMOTE_ADDR', ''),
                 os.environ.get('REMOTE_USER', '')))
 
-    print 'Status: 302 Moved'
-    print 'Location: ' + urllib.unquote(url)
-    print cookie
-    print ''
+    print("Status: 302 Moved")
+    print("Location: " + urllib.parse.unquote(url))
+    print(cookie)
+    print()
 else:
-    print 'Content-type: text/html\r\n\r\n'
-    print open(TEMPLATE_FILE).read()
+    print("Content-type: text/html\r\n\r\n")
+    print(open(TEMPLATE_FILE).read())
