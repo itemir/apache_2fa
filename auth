@@ -58,8 +58,7 @@ if user is None or user_secret is None:
     print("Contact your administrator to obtain your 2FA secret.\n")
     sys.exit()
 
-token_gen = str(onetimepass.get_totp(user_secret))
-if token_user == token_gen:
+if onetimepass.valid_totp(token=token_user, secret=user_secret, window=1):
     cookie = Cookie.SimpleCookie()
     # Create a random key and store it in session cookie
     random = os.urandom(80)
