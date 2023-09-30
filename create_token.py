@@ -54,4 +54,4 @@ qr_text = "otpauth://totp/%s?secret=%s" % (user, tokens[user])
 img = qrcode.make(qr_text)
 filename = "%s.png" % user
 img.save("%s.png" % user)
-print ("QR code sved in %s" % filename)
+print ("QR code saved in %s" % filename)
