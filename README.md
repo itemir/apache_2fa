@@ -94,19 +94,17 @@ Alternatively, you can use the **R24UZEAOIUAZHY62IEB5XJOVKT6PYGOYNDKVVU3KS4DZCYO
 
 If the test is successful, edit `apache_credentials` and `tokens.json` files and remove **test_user**.
 
-You can create new user profiles with the following command:
-
-    $ ./create_token.py <username>
-
-This will create a new token in `tokens.json` file and create `<username>.png` file with the QR code you can scan with your authenticator app.
-
 Maintenance
 ---
-You can create new users by using *htdigest* tool:
+You can create new users with the following command:
 
-    $ htdigest apache_credentials yourdomain.com <new_user>
+    $ htdigest apache_credentials yourdomain.com <username>
 
-For creating secret keys for Google Authenticator, refer to [this article](https://nerdyness2012.wordpress.com/tag/oathtool/). You need to save generated secret keys (base32) in *tokens.json* file.
+You can create corresponding OTP secrets with the following command:
+
+    $ ./create_token.py <username> # May require sudo
+
+This will create a new token in `tokens.json` file and create `<username>.png` file with the QR code you can scan with your authenticator app.
 
 For every successful authentication session, a new file will be created under */state* directory. This file is relevant until the cookie expires (default value is 6 hours for expiration). You will eventually want to clean stale entried in this directory. *state_clean* utility that is included the repository can be used to delete state files that are older than 6 hours. You can call it from a cron job every hour which also prevents users from manually increasing the expiration timer of cookies to delay token re-authorization:
 
