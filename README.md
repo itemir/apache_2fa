@@ -17,7 +17,7 @@ Clone the repository and install dependencies:
 
     $ git clone https://github.com/itemir/apache_2fa
     $ cd apache_2fa
-    $ sudo pip install onetimepass
+    $ pip install -r requirements # Might require sudo
 
 Create a directory for storing states:
 
@@ -70,7 +70,7 @@ Add the following configuration to Apache configuration under appropriate Virtua
         Require valid-user
     </Directory>
 
-Replace *path to apache_2fa* with the full path of cloned repository, *path to protected directory* with the actual path of the site you are trying to protect. If you change *yourdomain.com* make sure to make corresponding changes in *apache_credentials* file. Pay special attention to trailing slashes where present. You may be able to combine two Directory configurations into one depending on your directory structure, just make sure both paths are covered by the same auhentication mechanism.
+Replace *path to apache_2fa* with the full path of cloned repository, *path to protected directory* with the actual path of the site you are trying to protect. If you change *yourdomain.com* make sure to make corresponding changes in `apache_credentials` file. Pay special attention to trailing slashes where present. You may be able to combine two Directory configurations into one depending on your directory structure, just make sure both paths are covered by the same auhentication mechanism.
 
 ***NOTE***: This configuration is for https. For a setup like this, using http is not recommended. However, if you want to test it with http you need to make changes to the auth script and comment out the following two lines:
 
@@ -86,9 +86,19 @@ If all went well, you can now test the application. Go to a protected web page. 
 
     $ htdigest apache_credentials yourdomain.com test_user
 
-In order to obtain Authentication Token, download Google Authenticator for [iOS](https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8) or [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en) and create a profile by using **ND4LKCSFMUQISO6CBZQATLDP** secret key (there are many other applications that provide the same capability with additional features, you can basically use any application that supports TOTP). Once you define a profile, Google Authenticator will create a token that you can use in this form.
+In order to obtain Authentication Token, download Google Authenticator for [iOS](https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8) or [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en) and create a profile by scanning the following QR code:
 
-If the test is successful, edit *apache_credentials* and *tokens.json* files and remove **test_user**.
+![QR Code](test_user.png)
+
+Alternatively, you can use the **R24UZEAOIUAZHY62IEB5XJOVKT6PYGOYNDKVVU3KS4DZCYOOSIF6M6TFYEWVZAOX** secret key. There are many other applications that provide the same capability with additional features, you can basically use any application that supports TOTP. Once you define a profile, Google Authenticator will create a token that you can use in this form.
+
+If the test is successful, edit `apache_credentials` and `tokens.json` files and remove **test_user**.
+
+You can create new user profiles with the following command:
+
+    $ ./create_token.py <username>
+
+This will create a new token in `tokens.json` file and create `<username>.png` file with the QR code you can scan with your authenticator app.
 
 Maintenance
 ---
